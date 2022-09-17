@@ -1,0 +1,46 @@
+.word-container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 1rem auto;
+  padding: 1rem;
+  height: max-content;
+  border-radius: 0.5rem;
+  box-shadow: 0 5px 10px 0 gray;
+}
+
+.word-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.word-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: blue;
+  padding: 1.5rem;
+  color: white;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.back-arrow {
+  cursor: pointer;
+}
+.pronounce {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.audio {
+  cursor: pointer;
+}
+@media screen and (min-width: 768px) {
+  .word-container {
+    width: 40%;
+  }
+}
