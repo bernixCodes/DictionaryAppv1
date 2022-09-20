@@ -54,9 +54,16 @@ function Word() {
               <>
                 <div key={index} className="definition-container">
                   {item?.meanings?.map((meaning, idx) => (
-                    <div key={idx}>
-                      {console.log(meaning.partOfSpeech)}
-                      <h5>{meaning.partOfSpeech}</h5>
+                    <div key={idx} className="def-speech">
+                      {/* {console.log(meaning.partOfSpeech)} */}
+                      <h3
+                        style={{
+                          marginBottom: "10px",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {meaning.partOfSpeech}
+                      </h3>
                       {meaning.definitions.map((def, i) => {
                         return (
                           <div>
@@ -64,8 +71,11 @@ function Word() {
                           </div>
                         );
                       })}
+                      {meaning?.synonyms.length > 0 && (
+                        <h4 style={{ marginTop: "10px" }}>Synonyms</h4>
+                      )}
                       {meaning.synonyms.map((synonym, i) => (
-                        <div key={i}>
+                        <div key={i} className="synonym">
                           <p>{synonym}</p>
                         </div>
                       ))}
