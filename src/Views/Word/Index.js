@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-// import TabComponent from "../../component/Tab/Index";
+import Loader from "../../components/Loader/Index";
 
 function Word() {
   const [wordDefinition, setWordDefinition] = useState([]);
+  const [exist, SetExist] = useState(true);
+  const [audio, SetAudio] = useState(null);
 
   const navigate = useNavigate();
   let { word } = useParams();
@@ -16,15 +18,34 @@ function Word() {
 
   useEffect(() => {
     const fetchWordMeanings = async () => {
-      const response = await axios.get(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
-      );
-      setWordDefinition(response.data);
-      console.log(response.data);
+      try {
+        const response = await axios.get(
+          `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+        );
+        setWordDefinition(response.data);
+        const phonetics = response.data[0].phonetics;
+        if (!phonetics[0].audio) return;
+        const url = phonetics[0].audio;
+        SetAudio(new Audio(url));
+        // console.log(response.data);
+      } catch (error) {
+        SetExist(false);
+      }
     };
     fetchWordMeanings();
   }, [word]);
 
+  if (!exist) {
+    return (
+      <div className="not-found">
+        <p>Word not found.</p>
+        <button onClick={goBack} className="backBtn">
+          Go back
+        </button>
+      </div>
+    );
+  }
+  if (!wordDefinition.length) return <Loader />;
   return (
     <>
       <div className="container">
@@ -44,7 +65,14 @@ function Word() {
               <h3>{word}</h3>
               <div className="pronounce">
                 <p>{`${wordDefinition[0]?.phonetic}`}</p>
-                <span className="material-icons-outlined audio">volume_up</span>
+                {audio && (
+                  <span
+                    className="material-icons-outlined audio"
+                    onClick={() => audio.play()}
+                  >
+                    volume_up
+                  </span>
+                )}
               </div>
             </div>
           </div>
